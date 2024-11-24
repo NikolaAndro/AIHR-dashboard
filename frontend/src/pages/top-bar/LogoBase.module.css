@@ -1,0 +1,31 @@
+.logoBase {
+    display: flex;
+    align-items: center;
+    min-width: 350px;
+    padding-left: 1.5%;
+
+    font-family:
+    'Times New Roman',
+    'Segoe UI',
+    'Segoe UI Web (West European)',
+    'Segoe UI',
+    -apple-system,
+    BlinkMacSystemFont,
+    Roboto,
+    'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 15px;
+}
+  
+.logo img {
+    width: 50px; /* Adjust the size as needed */
+    height: auto;
+    margin-right: 10px;;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}

@@ -1,0 +1,23 @@
+.chartLegend {
+    display: flex;
+    justify-content: center; /* Center the legend items */
+    align-items: center;
+  }
+  
+  .legendItem {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Space between legend items */
+  }
+  
+  .legendItem:last-child {
+    margin-right: 0; /* Remove margin from the last item */
+  }
+  
+  .legendColor {
+    display: inline-block;
+    width: 20px; /* Set the size of the color box */
+    height: 20px;
+    border-radius: 50%; /* Make the color box round */
+    margin-right: 10px; /* Space between the color box and the text */
+  }

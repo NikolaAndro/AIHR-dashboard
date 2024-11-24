@@ -1,0 +1,34 @@
+.searchBarContainer {
+    margin-right: auto; /* Pushes the search bar to the left */
+    width: 75%; /* Make it responsive */
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.searchBar {
+    padding: 10px;
+    border-radius: 20px; /* Makes the search bar round */
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 100%; /* Adjust the width as needed */
+    outline: none;
+    transition: border-color 0.3s ease;
+    padding-left: 40px; /* Adjust the padding to make space for the search icon */
+}
+
+.searchBar:focus {
+    border-color: #007BFF;
+}
+
+.searchBarWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.searchBarWrapper .fa-search {
+    position: absolute;
+    left: 10px;
+    color: #aaa;
+    padding-left: 10px;
+}
