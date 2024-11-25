@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Dropdown from '../../components/Dropdown/Dropdown';
 import styles from './KeySkillsInsights.module.css';
 import legendStyles from './KeyInsightsLegend.module.css';
 
 const KeySkillsInsights = () => {
+  const [selectedOption, setSelectedOption] = useState('Nikola Andric');
+  const options = ['Nikola Andric', 'Ernest Choi', 'Nikhil Sharma', 'Mana Birgani'];
+
   return (
     <section className={styles.keySkillInsights}>
       <div className={styles.keySkillInsightsTop}>
@@ -17,20 +21,7 @@ const KeySkillsInsights = () => {
             <span>Candidate</span>
           </div>
         </div>
-        <div className={styles.keySelectWrapper}>
-          <div className={styles.keySelect}>
-            <div className={styles.keySelectTrigger}>
-              <span>Nikola Andric</span>
-              <div className={styles.arrow}></div>
-            </div>
-            <div className={styles.keyOptions}>
-              <span className={`${styles.keyOption} ${styles.selected}`} data-value="job-8456453">Nikola Andric</span>
-              <span className={styles.keyOption} data-value="job-5325825">Ernest Choi</span>
-              <span className={styles.keyOption} data-value="job-4354912">Nikhil Sharma</span>
-              <span className={styles.keyOption} data-value="job-8451354">Mana Birgani</span>
-            </div>
-          </div>
-        </div>
+        <Dropdown options={options} selectedOption={selectedOption} onOptionSelect={setSelectedOption} />
       </div>
       <div className={styles.chart}>
         <p>Chart goes here</p>

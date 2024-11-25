@@ -86,23 +86,18 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, conv
         onChange={onQuestionChange}
         onKeyDown={onEnterPress}
       />
-      {!OYD_ENABLED && (
-        <div className={styles.fileInputContainer}>
-          <input
-            type="file"
-            id="fileInput"
-            onChange={(event) => handleImageUpload(event)}
-            accept="image/*"
-            className={styles.fileInput}
-          />
-          <label htmlFor="fileInput" className={styles.fileLabel} aria-label='Upload Image'>
-            <FontIcon
-              className={styles.fileIcon}
-              iconName={'PhotoCollection'}
-              aria-label='Upload Image'
-            />
-          </label>
-        </div>)}
+      <div className={styles.fileInputContainer}>
+        <input
+          type="file"
+          id="fileInput"
+          onChange={handleImageUpload}
+          accept="image/*"
+          className={styles.fileInput}
+        />
+        <label htmlFor="fileInput" className={styles.fileLabel} aria-label="Upload Image">
+          <FontIcon className={styles.fileIcon} iconName={'PhotoCollection'} aria-label="Upload Image" />
+        </label>
+      </div>
       {base64Image && <img className={styles.uploadedImage} src={base64Image} alt="Uploaded Preview" />}
       <div
         className={styles.questionInputSendButtonContainer}
@@ -110,7 +105,8 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, conv
         tabIndex={0}
         aria-label="Ask question button"
         onClick={sendQuestion}
-        onKeyDown={e => (e.key === 'Enter' || e.key === ' ' ? sendQuestion() : null)}>
+        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ' ? sendQuestion() : null)}
+      >
         {sendQuestionDisabled ? (
           <SendRegular className={styles.questionInputSendButtonDisabled} />
         ) : (

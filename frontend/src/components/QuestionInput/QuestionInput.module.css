@@ -1,7 +1,7 @@
 .questionInputContainer {
   height: 120px;
   position: absolute;
-  left: 6.5%;
+  left: 0%;
   right: 0%;
   top: 0%;
   bottom: 0%;
@@ -10,6 +10,7 @@
     0px 8px 16px rgba(0, 0, 0, 0.14),
     0px 0px 2px rgba(0, 0, 0, 0.12);
   border-radius: 8px;
+  display: flex;
 }
 
 .questionInputTextArea {
@@ -19,6 +20,13 @@
   margin-bottom: 10px;
   margin-left: 12px;
   margin-right: 12px;
+  flex: 1;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .questionInputSendButtonContainer {
@@ -64,9 +72,15 @@
 }
 
 .fileInputContainer {
-  position: absolute;
+  /* position: absolute;
   right: 24px;
-  top: 20px;
+  top: 20px; */
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
 }
 
 .fileInput {
@@ -76,6 +90,7 @@
   overflow: hidden;
   position: absolute;
   z-index: -1;
+  display: none;
 }
 
 .fileLabel {
