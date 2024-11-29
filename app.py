@@ -24,6 +24,7 @@ from azure.identity.aio import (
 from backend.auth.auth_utils import get_authenticated_user_details
 from backend.security.ms_defender_utils import get_msdefender_user_json
 from backend.history.cosmosdbservice import CosmosConversationClient
+from backend.cosmosHRmanagersDBservice.cosmosHRmanagersDBservice import CosmosHRmanagersDBClient
 from backend.settings import (
     app_settings,
     MINIMUM_SUPPORTED_AZURE_OPENAI_PREVIEW_API_VERSION
@@ -49,7 +50,7 @@ def create_app():
     @app.before_serving
     async def init():
         try:
-            app.cosmos_conversation_client = await init_cosmosdb_client()
+            app.cosmos_conversation_client, app.cosmos_hr_manager_client = await init_cosmosdb_client()
             cosmos_db_ready.set()
         except Exception as e:
             logging.exception("Failed to initialize CosmosDB client")
@@ -196,6 +197,17 @@ async def init_cosmosdb_client():
                 container_name=app_settings.chat_history.conversations_container,
                 enable_message_feedback=app_settings.chat_history.enable_feedback,
             )
+
+            #Initialize HR Manager client
+            hr_manager_database = os.getenv("AZURE_COSMOSDB_HR_MANAGER_DATABASE")
+            hr_manager_container = os.getenv("AZURE_COSMOSDB_HR_MANAGER_CONTAINER")
+            credential_read_only = os.getenv("AZURE_COSMOSDB_READ_ONLY_ACCOUNT_KEY")
+            cosmos_hr_manager_client = CosmosHRmanagersDBClient(
+                cosmosdb_endpoint=cosmos_endpoint,
+                credential=credential_read_only,
+                database_name=hr_manager_database,
+                container_name=hr_manager_container,
+            )
         except Exception as e:
             logging.exception("Exception in CosmosDB initialization", e)
             cosmos_conversation_client = None
@@ -203,9 +215,30 @@ async def init_cosmosdb_client():
     else:
         logging.debug("CosmosDB not configured")
 
-    return cosmos_conversation_client
+    return cosmos_conversation_client, cosmos_hr_manager_client
 
+@bp.route("/personal_info", methods=["GET"])
+async def get_personal_info():
+    await cosmos_db_ready.wait()
+    user_id = request.args.get("user_id")
 
+    if not user_id:
+        return jsonify({"error": "user_id is required"}), 400
+
+    try:
+        # Await the get_container_client() method to get the container client
+        container = await current_app.cosmos_hr_manager_client.get_container_client("personal_info")
+        query = f"SELECT * FROM c WHERE c.id = '{user_id}'"
+        user_info = [item async for item in container.query_items(query)]
+
+        if not user_info:
+            return jsonify({"error": "User not found"}), 404
+
+        return jsonify(user_info[0]), 200
+    except Exception as e:
+        logging.exception("Exception in /personal_info")
+        return jsonify({"error": str(e)}), 500
+    
 def prepare_model_args(request_body, request_headers):
     request_messages = request_body.get("messages", [])
     messages = []

@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from azure.cosmos.aio import CosmosClient
 from azure.cosmos import exceptions
-  
+      
 class CosmosConversationClient():
     
     def __init__(self, cosmosdb_endpoint: str, credential: any, database_name: str, container_name: str, enable_message_feedback: bool = False):
