@@ -180,4 +180,7 @@ class CosmosConversationClient():
             messages.append(item)
 
         return messages
+    
+    async def close(self):
+        await self.cosmosdb_client.close()
 

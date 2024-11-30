@@ -25,6 +25,9 @@ from backend.auth.auth_utils import get_authenticated_user_details
 from backend.security.ms_defender_utils import get_msdefender_user_json
 from backend.history.cosmosdbservice import CosmosConversationClient
 from backend.cosmosHRmanagersDBservice.cosmosHRmanagersDBservice import CosmosHRmanagersDBClient
+from backend.cosmosCandidatesDBService.cosmosCandidatesDBService import CosmosCandidatesDBService
+from backend.cosmosJobsDBService.cosmosJobsDBService import CosmosJobsDBService
+
 from backend.settings import (
     app_settings,
     MINIMUM_SUPPORTED_AZURE_OPENAI_PREVIEW_API_VERSION
@@ -50,13 +53,24 @@ def create_app():
     @app.before_serving
     async def init():
         try:
-            app.cosmos_conversation_client, app.cosmos_hr_manager_client = await init_cosmosdb_client()
+            app.cosmos_conversation_client, app.cosmos_hr_manager_client, app.cosmos_candidates_client, app.cosmos_jobs_client = await init_cosmosdb_client()
             cosmos_db_ready.set()
         except Exception as e:
             logging.exception("Failed to initialize CosmosDB client")
             app.cosmos_conversation_client = None
             raise e
     
+    @app.after_serving
+    async def shutdown():
+        if app.cosmos_conversation_client:
+            await app.cosmos_conversation_client.close()
+        if app.cosmos_hr_manager_client:
+            await app.cosmos_hr_manager_client.close()
+        if app.cosmos_candidates_client:
+            await app.cosmos_candidates_client.close()
+        if app.cosmos_jobs_client:
+            await app.cosmos_jobs_client.close()
+
     return app
 
 
@@ -208,6 +222,27 @@ async def init_cosmosdb_client():
                 database_name=hr_manager_database,
                 container_name=hr_manager_container,
             )
+
+            # Initialize candidates db client
+            candidates_database = os.getenv("AZURE_COSMOSDB_CANDIDATES_DATABASE")
+            candidates_container = os.getenv("AZURE_COSMOSDB_CANDIDATES_CONTAINER")
+            cosmos_candidates_client = CosmosCandidatesDBService(
+                cosmosdb_endpoint=cosmos_endpoint,
+                credential=credential_read_only,
+                database_name=candidates_database,
+                container_name=candidates_container,
+            )
+
+            # Initialize jobs db client
+            jobs_database = os.getenv("AZURE_COSMOSDB_JOBS_DATABASE")
+            jobs_container = os.getenv("AZURE_COSMOSDB_JOBS_CONTAINER")
+            cosmos_jobs_client = CosmosJobsDBService(
+                cosmosdb_endpoint=cosmos_endpoint,
+                credential=credential_read_only,
+                database_name=jobs_database,
+                container_name=jobs_container,
+            )
+            
         except Exception as e:
             logging.exception("Exception in CosmosDB initialization", e)
             cosmos_conversation_client = None
@@ -215,7 +250,7 @@ async def init_cosmosdb_client():
     else:
         logging.debug("CosmosDB not configured")
 
-    return cosmos_conversation_client, cosmos_hr_manager_client
+    return cosmos_conversation_client, cosmos_hr_manager_client, cosmos_candidates_client, cosmos_jobs_client
 
 @bp.route("/personal_info", methods=["GET"])
 async def get_personal_info():
@@ -237,6 +272,90 @@ async def get_personal_info():
         return jsonify(user_info[0]), 200
     except Exception as e:
         logging.exception("Exception in /personal_info")
+        return jsonify({"error": str(e)}), 500
+    
+@bp.route("/candidate_info", methods=["GET"])
+async def get_candidate_info():
+    await cosmos_db_ready.wait()
+    applied_position_id = request.args.get("applied_position_id")
+
+    if not applied_position_id:
+        return jsonify({"error": "applied_position_id is required"}), 400
+
+    try:
+        # Await the get_container_client() method to get the container client
+        container = await current_app.cosmos_candidates_client.get_container_client("candidate_info")
+        query = f"SELECT * FROM c WHERE c.applied_position_id = '{applied_position_id}'"
+        candidate_info = [item async for item in container.query_items(query)] 
+
+        if not candidate_info:
+            return jsonify([]), 200
+
+        return jsonify(candidate_info), 200
+    except Exception as e:
+        logging.exception("Exception in /candidate_info")
+        return jsonify({"error": str(e)}), 500
+    
+@bp.route("/job_info", methods=["GET"])
+async def get_job_info():
+    await cosmos_db_ready.wait()
+    job_id = request.args.get("job_id")
+
+    if not job_id:
+        return jsonify({"error": "job_id is required"}), 400
+
+    try:
+        # Await the get_container_client() method to get the container client
+        container = await current_app.cosmos_candidates_client.get_container_client("jobs")
+        query = f"SELECT * FROM c WHERE c.id = '{job_id}'"
+        user_info = [item async for item in container.query_items(query)]
+
+        if not user_info:
+            return jsonify({"error": "User not found"}), 404
+
+        return jsonify(user_info[0]), 200
+    except Exception as e:
+        logging.exception("Exception in /personal_info")
+        return jsonify({"error": str(e)}), 500
+    
+@bp.route("/job_ids", methods=["GET"])
+async def get_all_job_ids():
+    await cosmos_db_ready.wait()
+
+    try:
+        # Await the get_container_client() method to get the container client
+        container = await current_app.cosmos_jobs_client.get_container_client("jobs")
+        query = "SELECT c.id, c.job_title FROM c"
+        job_data = [item async for item in container.query_items(query)]
+
+        if not job_data:
+            return jsonify({"job_data": []}), 200
+
+        return jsonify({"job_data": job_data}), 200
+    except Exception as e:
+        logging.exception("Exception in /job_ids")
+        return jsonify({"error": str(e)}), 500
+
+@bp.route("/job_key_skills", methods=["GET"])
+async def get_job_key_skills():
+    await cosmos_db_ready.wait()
+    job_id = request.args.get("job_id")
+
+    if not job_id:
+        return jsonify({"error": "job_id is required"}), 400
+
+    try:
+        # Await the get_container_client() method to get the container client
+        container = await current_app.cosmos_jobs_client.get_container_client("jobs")
+        query = f"SELECT c.key_skills FROM c WHERE c.id = '{job_id}'"
+        job_info = [item async for item in container.query_items(query)]
+
+        if not job_info:
+            return jsonify({"error": "Job not found"}), 404
+
+        return jsonify(job_info[0]), 200
+    except Exception as e:
+        logging.exception("Exception in /job_key_skills")
         return jsonify({"error": str(e)}), 500
     
 def prepare_model_args(request_body, request_headers):

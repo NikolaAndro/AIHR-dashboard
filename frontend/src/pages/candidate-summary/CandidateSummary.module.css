@@ -87,8 +87,16 @@
   th,
   td {
     padding: 12px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #ddd;
+  }
+
+  tbody tr td {
+    text-align: center;
+  }
+
+  tbody tr td:has(.candidateProfileImg) {
+    text-align: left;
   }
   
   td:has(.candidateProfileImg) {
@@ -122,3 +130,28 @@
   .contract {
     color: gray;
   }
+
+  .sortByDropdown {
+    min-width: 200px;
+  }
+  
+  .jobTitleDropdown {
+    min-width: 200px;
+  }
+  
+  .jobIdDropdown {
+    min-width: 100px;
+  }
+
+.clearChatBroom {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  border-radius: 4px;
+  z-index: 1;
+}

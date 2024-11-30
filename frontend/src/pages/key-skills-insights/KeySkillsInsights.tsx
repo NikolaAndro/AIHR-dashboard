@@ -3,9 +3,19 @@ import Dropdown from '../../components/Dropdown/Dropdown';
 import styles from './KeySkillsInsights.module.css';
 import legendStyles from './KeyInsightsLegend.module.css';
 
+interface DropdownOption {
+  value: string;
+  label: string;
+}
+
 const KeySkillsInsights = () => {
-  const [selectedOption, setSelectedOption] = useState('Nikola Andric');
-  const options = ['Nikola Andric', 'Ernest Choi', 'Nikhil Sharma', 'Mana Birgani'];
+  const [selectedOption, setSelectedOption] = useState<DropdownOption | null>(null);
+  const options: string[] = ['Nikola Andric', 'Ernest Choi', 'Nikhil Sharma', 'Mana Birgani'];
+
+  const dropdownOptions: DropdownOption[] = options.map(option => ({
+    value: option,
+    label: option
+  }));
 
   return (
     <section className={styles.keySkillInsights}>
@@ -21,13 +31,13 @@ const KeySkillsInsights = () => {
             <span>Candidate</span>
           </div>
         </div>
-        <Dropdown options={options} selectedOption={selectedOption} onOptionSelect={setSelectedOption} />
+        <Dropdown options={dropdownOptions} selectedOption={selectedOption} onOptionSelect={setSelectedOption} placeholder="Candidate"/>
       </div>
       <div className={styles.chart}>
         <p>Chart goes here</p>
       </div>
     </section>
   );
-};
+}
 
 export default KeySkillsInsights;

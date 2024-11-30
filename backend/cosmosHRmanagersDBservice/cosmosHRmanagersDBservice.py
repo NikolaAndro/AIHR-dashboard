@@ -66,3 +66,6 @@ class CosmosHRmanagersDBClient():
             return user_info[0]
         except exceptions.CosmosHttpResponseError as e:
             raise ValueError(f"Error querying CosmosDB: {str(e)}")
+        
+    async def close(self):
+        await self.cosmosdb_client.close()

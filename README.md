@@ -457,3 +457,58 @@ trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+
+# Additional Help
+
+## How to Find the AZUREAPPSERVICE_TENANTID:
+
+1. Find the Tenant ID in the Azure Portal
+Log in to the Azure Portal: Go to https://portal.azure.com and sign in.
+
+2. Navigate to Azure Active Directory:
+
+3. On the left sidebar, click on Azure Active Directory.
+Find the Tenant ID:
+
+4. In the Overview section of Azure Active Directory, you will see the Directory (tenant) ID.
+This Directory (tenant) ID is the Tenant ID that you'll use as AZUREAPPSERVICE_TENANTID.
+Copy the Tenant ID:
+
+5. Simply copy the Directory (tenant) ID value, as this is the AZUREAPPSERVICE_TENANTID.
+
+## Steps to Find or Create the AZUREAPPSERVICE_CLIENTID:
+
+1. If you already have a Service Principal:
+Log in to the Azure Portal: Go to https://portal.azure.com.
+
+2. Navigate to Azure Active Directory:
+
+3. In the left-hand sidebar, search for and select Azure Active Directory.
+Go to "App Registrations":
+
+4. Under the Manage section on the left, select App registrations.
+Click on All applications (or Owned applications) to see a list of applications (Service Principals).
+Find the Service Principal:
+
+5. Look for the Service Principal that corresponds to your App Service or deployment automation (this might have been created when setting up deployment, or it could have been manually created).
+Click on the Service Principal name.
+Copy the Client ID:
+
+6. Under the Overview tab, you will see a field labeled Application (client) ID. This is the AZUREAPPSERVICE_CLIENTID you're looking for. Copy this Client ID.
+
+## Steps to find the Subscription ID in Azure:
+
+1. Log in to the Azure Portal: Visit https://portal.azure.com and sign in with your Azure credentials.
+
+2. Navigate to Subscriptions:
+
+3. In the Azure portal, click on the "All services" link on the left-hand side or search bar at the top.
+Search for and select "Subscriptions". This will display a list of all subscriptions in your Azure account.
+Find the Subscription ID:
+
+4. In the Subscriptions blade, you'll see a list of your subscriptions.
+The Subscription ID is displayed under the Subscription Name (usually in the format of a GUID).
+You can click on a specific subscription to view its details.
+
+5. Copy the Subscription ID: You can click on the subscription to open its detailed view and copy the Subscription ID from there.

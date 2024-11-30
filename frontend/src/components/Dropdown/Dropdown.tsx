@@ -1,13 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './Dropdown.module.css';
 
-interface DropdownProps {
-  options: string[];
-  selectedOption: string;
-  onOptionSelect: (option: string) => void;
+interface DropdownOption {
+  value: string;
+  label: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ options, selectedOption, onOptionSelect }) => {
+interface DropdownProps {
+  options: DropdownOption[];
+  selectedOption: DropdownOption | null;
+  onOptionSelect: (option: DropdownOption) => void;
+  placeholder: string;
+  className?: string; // Add className prop
+}
+
+const Dropdown: React.FC<DropdownProps> = ({ options, selectedOption, onOptionSelect, placeholder, className }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -15,7 +22,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, selectedOption, onOptionSe
     setIsOpen(!isOpen);
   };
 
-  const handleOptionClick = (option: string) => {
+  const handleOptionClick = (option: DropdownOption) => {
     onOptionSelect(option);
     setIsOpen(false);
   };
@@ -34,20 +41,20 @@ const Dropdown: React.FC<DropdownProps> = ({ options, selectedOption, onOptionSe
   }, []);
 
   return (
-    <div className={styles.dropdown} ref={dropdownRef}>
+    <div className={`${styles.dropdown} ${className}`} ref={dropdownRef}>
       <div className={styles.dropdownTrigger} onClick={toggleDropdown}>
-        <span>{selectedOption}</span>
+        <span>{selectedOption ? selectedOption.label : placeholder}</span>
         <div className={styles.arrow}></div>
       </div>
       {isOpen && (
         <div className={styles.dropdownOptions}>
           {options.map((option) => (
             <span
-              key={option}
-              className={`${styles.dropdownOption} ${option === selectedOption ? styles.selected : ''}`}
+              key={option.value}
+              className={`${styles.dropdownOption} ${option.value === selectedOption?.value ? styles.selected : ''}`}
               onClick={() => handleOptionClick(option)}
             >
-              {option}
+              {option.label}
             </span>
           ))}
         </div>

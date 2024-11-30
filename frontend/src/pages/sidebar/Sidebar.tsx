@@ -41,7 +41,6 @@ const Sidebar = () => {
       </div>
       <nav className={styles.nav}>
         <a href="#" className={`${styles.navLink} ${styles.active}`}><i className="fas fa-tachometer-alt"></i> Dashboard</a>
-        <a href="#" className={styles.navLink}><i className="fas fa-dollar-sign"></i> Finance</a>
         <a href="#" className={styles.navLink}><i className="fas fa-users"></i> Employees</a>
         <a href="#" className={styles.navLink}><i className="fas fa-building"></i> Company</a>
         <a href="#" className={styles.navLink}><i className="fas fa-user-tie"></i> Candidate</a>
