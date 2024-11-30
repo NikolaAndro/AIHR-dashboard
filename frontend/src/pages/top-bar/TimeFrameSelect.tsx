@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './TimeFrameSelect.module.css';
 
-const TimeFrameSelect = () => {
+interface TimeFrameSelectProps {
+  selectedTimeFrame: string;
+  onTimeFrameChange: (option: string) => void;
+}
+
+const TimeFrameSelect: React.FC<TimeFrameSelectProps> = ({ selectedTimeFrame, onTimeFrameChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('Past Week');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
@@ -11,7 +15,7 @@ const TimeFrameSelect = () => {
   };
 
   const handleOptionClick = (option: string) => {
-    setSelectedOption(option);
+    onTimeFrameChange(option);
     setIsOpen(false);
   };
 
@@ -30,19 +34,18 @@ const TimeFrameSelect = () => {
 
   return (
     <div className={styles.timeFrameContainer}>
-      <label htmlFor="time-frame">Time Frame:</label>
+      <label htmlFor="time-frame-select">Time Frame:</label>
       <div className={styles.customSelectWrapper} ref={dropdownRef}>
-        <div className={styles.customSelect} onClick={toggleDropdown}>
+        <div id="time-frame-select" className={styles.customSelect} onClick={toggleDropdown}>
           <div className={styles.customSelectTrigger}>
-            <span>{selectedOption}</span>
+            <span>{selectedTimeFrame}</span>
             <div className={styles.arrow}></div>
           </div>
           {isOpen && (
             <div className={styles.customOptions}>
-              <span className={`${styles.customOption} ${selectedOption === 'Past Week' ? styles.selected : ''}`} onClick={() => handleOptionClick('Past Week')}>Past Week</span>
-              <span className={`${styles.customOption} ${selectedOption === 'Past Month' ? styles.selected : ''}`} onClick={() => handleOptionClick('Past Month')}>Past Month</span>
-              <span className={`${styles.customOption} ${selectedOption === 'Past 3 Months' ? styles.selected : ''}`} onClick={() => handleOptionClick('Past 3 Months')}>Past 3 Months</span>
-              <span className={`${styles.customOption} ${selectedOption === 'Past 6 Months' ? styles.selected : ''}`} onClick={() => handleOptionClick('Past 6 Months')}>Past 6 Months</span>
+              <span className={`${styles.customOption} ${selectedTimeFrame === 'Past Month' ? styles.selected : ''}`} onClick={() => handleOptionClick('Past Month')}>Past Month</span>
+              <span className={`${styles.customOption} ${selectedTimeFrame === 'Past 3 Months' ? styles.selected : ''}`} onClick={() => handleOptionClick('Past 3 Months')}>Past 3 Months</span>
+              <span className={`${styles.customOption} ${selectedTimeFrame === 'Past 6 Months' ? styles.selected : ''}`} onClick={() => handleOptionClick('Past 6 Months')}>Past 6 Months</span>
             </div>
           )}
         </div>

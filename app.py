@@ -273,7 +273,46 @@ async def get_personal_info():
     except Exception as e:
         logging.exception("Exception in /personal_info")
         return jsonify({"error": str(e)}), 500
-    
+
+@bp.route("/metrics", methods=["GET"])
+async def get_metrics():
+    await cosmos_db_ready.wait()
+    username = request.args.get("username")
+
+    if not username:
+        return jsonify({"error": "username is required"}), 400
+    else:
+        logging.debug(f"\n\n\nGetting metrics for {username}\n\n\n")
+
+    try:
+        # Await the get_container_client() method to get the container client
+        container = await current_app.cosmos_hr_manager_client.get_container_client("personal_info")
+        query = """
+            SELECT c.offerLettersSent, c.candidatesProcessed, c.score
+            FROM c WHERE c.username = @username
+            """
+        
+        parameters = [
+                {"name": "@username", "value": username}
+            ]
+        metrics_data = [
+                item async for item in container.query_items(
+                    query,
+                    parameters=parameters                )
+            ]
+        
+        if not metrics_data:
+            logging.debug(f"\n\n\nUser not found\n\n\n")
+            return jsonify({"error": "User not found"}), 404
+        else:
+            logging.debug(f"\n\n\nMetrics data: {metrics_data[0]}\n\n\n")
+
+        return jsonify(metrics_data[0]), 200
+    except Exception as e:
+        logging.exception("Exception in /personal_info")
+        return jsonify({"error": str(e)}), 500
+
+   
 @bp.route("/candidate_info", methods=["GET"])
 async def get_candidate_info():
     await cosmos_db_ready.wait()
@@ -357,7 +396,7 @@ async def get_job_key_skills():
     except Exception as e:
         logging.exception("Exception in /job_key_skills")
         return jsonify({"error": str(e)}), 500
-    
+
 def prepare_model_args(request_body, request_headers):
     request_messages = request_body.get("messages", [])
     messages = []

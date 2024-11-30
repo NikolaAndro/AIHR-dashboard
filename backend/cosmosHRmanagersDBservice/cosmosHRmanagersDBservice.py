@@ -67,5 +67,27 @@ class CosmosHRmanagersDBClient():
         except exceptions.CosmosHttpResponseError as e:
             raise ValueError(f"Error querying CosmosDB: {str(e)}")
         
+    async def get_metrics_data(self, username):
+        try:
+            query = """
+            SELECT c.offerLettersSent, c.candidatesProcessed, c.score
+            FROM c WHERE c.username = @username
+            """
+            parameters = [
+                {"name": "@username", "value": username}
+            ]
+            metrics_data = [
+                item async for item in self.container_client.query_items(
+                    query=query,
+                    parameters=parameters,
+                    enable_cross_partition_query=True
+                )
+            ]
+            if not metrics_data:
+                return {}
+            return metrics_data[0]
+        except exceptions.CosmosHttpResponseError as e:
+            raise ValueError(f"Error querying HR CosmosDB for metrics: {str(e)}")
+        
     async def close(self):
         await self.cosmosdb_client.close()

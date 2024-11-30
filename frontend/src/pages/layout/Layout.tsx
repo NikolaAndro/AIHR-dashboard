@@ -15,7 +15,6 @@ import Metrics from '../metrics/Metrics';
 import CandidateSummary from '../candidate-summary/CandidateSummary';
 import KeySkillsInsights from '../key-skills-insights/KeySkillsInsights';
 
-
 const Layout = () => {
   const [isSharePanelOpen, setIsSharePanelOpen] = useState<boolean>(false)
   const [copyClicked, setCopyClicked] = useState<boolean>(false)
@@ -24,6 +23,7 @@ const Layout = () => {
   const [hideHistoryLabel, setHideHistoryLabel] = useState<string>('Hide chat history')
   const [showHistoryLabel, setShowHistoryLabel] = useState<string>('Show chat history')
   const [logo, setLogo] = useState('')
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState<string>('Past Week')
   const appStateContext = useContext(AppStateContext)
   const ui = appStateContext?.state.frontendSettings?.ui
 
@@ -44,6 +44,10 @@ const Layout = () => {
 
   const handleHistoryClick = () => {
     appStateContext?.dispatch({ type: 'TOGGLE_CHAT_HISTORY' })
+  }
+
+  const handleTimeFrameChange = (timeFrame: string) => {
+    setSelectedTimeFrame(timeFrame)
   }
 
   useEffect(() => {
@@ -81,11 +85,11 @@ const Layout = () => {
 
   return (
     <div className={styles.layout}>
-      <TopBar />
+      <TopBar onTimeFrameChange={handleTimeFrameChange} />
       <div className={styles.mainContent}>
         <Sidebar />
         <div className={styles.content}>
-          <Metrics />
+          <Metrics selectedTimeFrame={selectedTimeFrame} />
           <CandidateSummary />
           <div className={styles.keySkillInsightsDialogContainer}>
             <KeySkillsInsights />
