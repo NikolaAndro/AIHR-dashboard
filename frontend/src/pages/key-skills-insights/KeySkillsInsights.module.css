@@ -13,10 +13,15 @@
   
   .chart {
     background: #e8e8e8;
-    padding: 40px;
+    padding: 10px;
     text-align: center;
     height: 85%;
     border-radius: 8px;
+  }
+  
+  .chart canvas {
+    width: 100% !important;
+    height: 100% !important;
   }
   
   .keySkillInsightsTop {

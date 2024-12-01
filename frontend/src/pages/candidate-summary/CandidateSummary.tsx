@@ -17,6 +17,7 @@ interface Candidate {
   clearances: boolean;
   image?: string;
   [key: string]: any; // To allow dynamic key access for key skills
+  key_skills_model_evaluation: { [key: string]: number };
 }
 
 interface Job {
@@ -24,17 +25,20 @@ interface Job {
   job_title: string;
 }
 
-const CandidateSummary = () => {
+interface CandidateSummaryProps {
+  setCandidates: React.Dispatch<React.SetStateAction<Candidate[]>>;
+  setKeySkills: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setKeySkills }) => {
   const [selectedJobName, setSelectedJobName] = useState<DropdownOption | null>(null);
   const [selectedJobId, setSelectedJobId] = useState<DropdownOption | null>(null);
   const [jobOptions, setJobOptions] = useState<Job[]>([]);
   const [filteredJobNames, setFilteredJobNames] = useState<DropdownOption[]>([]);
   const [filteredJobIds, setFilteredJobIds] = useState<DropdownOption[]>([]);
-  const [candidates, setCandidates] = useState<Candidate[]>([]);
-  const [keySkills, setKeySkills] = useState<string[]>([]);
+  const [candidates, setLocalCandidates] = useState<Candidate[]>([]);
+  const [keySkills, setLocalKeySkills] = useState<string[]>([]);
   const [sortCriteria, setSortCriteria] = useState<DropdownOption | null>(null);
-  // const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  // const [filters, setFilters] = useState<any>({});
 
   const sortOptions: DropdownOption[] = [
     { value: 'first_name', label: 'Candidate Name' },
@@ -48,11 +52,8 @@ const CandidateSummary = () => {
     const fetchJobIds = async () => {
       try {
         const response = await fetch('/job_ids');
-        console.log('Response:', response); // Print the response object
-
         if (response.ok) {
           const data = await response.json();
-          console.log('Job Data:', data); // Print the job data
           if (data.job_data && data.job_data.length > 0) {
             setJobOptions(data.job_data);
             const jobNames = data.job_data.map((job: Job) => ({
@@ -70,7 +71,7 @@ const CandidateSummary = () => {
           }
         } else {
           const errorData = await response.json();
-          console.error('Failed to fetch job IDs:', errorData); // Print the error data
+          console.error('Failed to fetch job IDs:', errorData);
         }
       } catch (error) {
         console.error('Error fetching job IDs:', error);
@@ -122,19 +123,17 @@ const CandidateSummary = () => {
 
       try {
         const response = await fetch(`/candidate_info?applied_position_id=${selectedJobId.value}`);
-        console.log('Response:', response); // Print the response object
-
         if (response.ok) {
           const data = await response.json();
-          console.log('Candidate Info Data:', data); // Print the user info data
           if (Array.isArray(data)) {
-            setCandidates(data);
+            setLocalCandidates(data);
+            setCandidates(data); // Pass candidates up to parent component
           } else {
             console.error('Expected an array of candidates');
           }
         } else {
           const errorData = await response.json();
-          console.error('Failed to fetch candidate info:', errorData); // Print the error data
+          console.error('Failed to fetch candidate info:', errorData);
         }
       } catch (error) {
         console.error('Error fetching candidate info:', error);
@@ -146,15 +145,13 @@ const CandidateSummary = () => {
 
       try {
         const response = await fetch(`/job_key_skills?job_id=${selectedJobId.value}`);
-        console.log('Response:', response); // Print the response object
-
         if (response.ok) {
           const data = await response.json();
-          console.log('Job Key Skills Data:', data); // Print the job key skills data
-          setKeySkills(data.key_skills);
+          setLocalKeySkills(data.key_skills);
+          setKeySkills(data.key_skills); // Pass key skills up to parent component
         } else {
           const errorData = await response.json();
-          console.error('Failed to fetch job key skills:', errorData); // Print the error data
+          console.error('Failed to fetch job key skills:', errorData);
         }
       } catch (error) {
         console.error('Error fetching job key skills:', error);
@@ -193,20 +190,6 @@ const CandidateSummary = () => {
     });
   }, [sortCriteria, candidates, keySkills]);
 
-  // useEffect(() => {
-  //   if (filters.jobName || filters.jobId || (filters.keySkills && filters.keySkills.length > 0)) {
-  //     const filteredCandidates = candidates.filter(candidate => {
-  //       const matchesJobName = filters.jobName ? candidate.job_title === filters.jobName.value : true;
-  //       const matchesJobId = filters.jobId ? candidate.job_id === filters.jobId.value : true;
-  //       const matchesKeySkills = filters.keySkills && filters.keySkills.length > 0
-  //         ? filters.keySkills.every((skill: string) => candidate[skill.toLowerCase()])
-  //         : true;
-  //       return matchesJobName && matchesJobId && matchesKeySkills;
-  //     });
-  //     setCandidates(filteredCandidates);
-  //   }
-  // }, [filters, candidates]);
-
   const resetSelections = () => {
     setSelectedJobName(null);
     setSelectedJobId(null);
@@ -219,12 +202,11 @@ const CandidateSummary = () => {
       value: job.id,
       label: job.id
     })));
-    setCandidates([]); // Clear the rows of the table
+    setLocalCandidates([]); // Clear the rows of the table
+    setCandidates([]); // Clear the rows of the table in parent component
+    setLocalKeySkills([]); // Clear key skills
+    setKeySkills([]); // Clear key skills in parent component
   };
-
-  // const handleApplyFilters = (filters: any) => {
-  //   setFilters(filters);
-  // };
 
   return (
     <section className={styles.candidatesSummary}>
@@ -251,8 +233,6 @@ const CandidateSummary = () => {
           placeholder="Job ID"
           className={styles.jobIdDropdown} // Add custom class
         />
-        {/* <button onClick={() => setIsFilterModalOpen(true)}>Filter</button> */}
-        {/* <button onClick={resetSelections}>Reset</button> */}
         <CommandBarButton
           role="button"
           styles={{
@@ -320,13 +300,6 @@ const CandidateSummary = () => {
           ))}
         </tbody>
       </table>
-      {/* <FilterModal
-        isOpen={isFilterModalOpen}
-        onClose={() => setIsFilterModalOpen(false)}
-        onApply={handleApplyFilters}
-        jobOptions={jobOptions.map(job => ({ value: job.id, label: job.job_title }))}
-        keySkills={keySkills}
-      /> */}
     </section>
   );
 };

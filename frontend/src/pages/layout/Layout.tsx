@@ -1,87 +1,98 @@
-import { useContext, useEffect, useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
-import { Dialog, Stack, TextField } from '@fluentui/react'
-import { CopyRegular } from '@fluentui/react-icons'
-
-import { CosmosDBStatus } from '../../api'
-import Contoso from '../../assets/Contoso.svg'
-import { HistoryButton, ShareButton } from '../../components/common/Button'
-import { AppStateContext } from '../../state/AppProvider'
-
-import styles from './Layout.module.css'
-import TopBar from '../top-bar/Top-bar'
-import Sidebar from '../sidebar/Sidebar'
+import React, { useState, useEffect, useContext } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Dialog, Stack, TextField } from '@fluentui/react';
+import { CopyRegular } from '@fluentui/react-icons';
+import { AppStateContext } from '../../state/AppProvider';
+import Contoso from '../../assets/Contoso.svg';
+import { HistoryButton, ShareButton } from '../../components/common/Button';
+import TopBar from '../top-bar/Top-bar';
+import Sidebar from '../sidebar/Sidebar';
 import Metrics from '../metrics/Metrics';
 import CandidateSummary from '../candidate-summary/CandidateSummary';
 import KeySkillsInsights from '../key-skills-insights/KeySkillsInsights';
+import styles from './Layout.module.css';
+
+interface Candidate {
+  first_name: string;
+  last_name: string;
+  years_of_experience: number;
+  piv_access: boolean;
+  clearances: boolean;
+  image?: string;
+  [key: string]: any; // To allow dynamic key access for key skills
+  key_skills_model_evaluation: { [key: string]: number };
+}
 
 const Layout = () => {
-  const [isSharePanelOpen, setIsSharePanelOpen] = useState<boolean>(false)
-  const [copyClicked, setCopyClicked] = useState<boolean>(false)
-  const [copyText, setCopyText] = useState<string>('Copy URL')
-  const [shareLabel, setShareLabel] = useState<string | undefined>('Share')
-  const [hideHistoryLabel, setHideHistoryLabel] = useState<string>('Hide chat history')
-  const [showHistoryLabel, setShowHistoryLabel] = useState<string>('Show chat history')
-  const [logo, setLogo] = useState('')
-  const [selectedTimeFrame, setSelectedTimeFrame] = useState<string>('Past Week')
-  const appStateContext = useContext(AppStateContext)
-  const ui = appStateContext?.state.frontendSettings?.ui
+  const [isSharePanelOpen, setIsSharePanelOpen] = useState<boolean>(false);
+  const [copyClicked, setCopyClicked] = useState<boolean>(false);
+  const [copyText, setCopyText] = useState<string>('Copy URL');
+  const [shareLabel, setShareLabel] = useState<string | undefined>('Share');
+  const [hideHistoryLabel, setHideHistoryLabel] = useState<string>('Hide chat history');
+  const [showHistoryLabel, setShowHistoryLabel] = useState<string>('Show chat history');
+  const [logo, setLogo] = useState('');
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState<string>('Past Week');
+  const appStateContext = useContext(AppStateContext);
+  const ui = appStateContext?.state.frontendSettings?.ui;
 
   const handleShareClick = () => {
-    setIsSharePanelOpen(true)
-  }
+    setIsSharePanelOpen(true);
+  };
 
   const handleSharePanelDismiss = () => {
-    setIsSharePanelOpen(false)
-    setCopyClicked(false)
-    setCopyText('Copy URL')
-  }
+    setIsSharePanelOpen(false);
+    setCopyClicked(false);
+    setCopyText('Copy URL');
+  };
 
   const handleCopyClick = () => {
-    navigator.clipboard.writeText(window.location.href)
-    setCopyClicked(true)
-  }
+    navigator.clipboard.writeText(window.location.href);
+    setCopyClicked(true);
+  };
 
   const handleHistoryClick = () => {
-    appStateContext?.dispatch({ type: 'TOGGLE_CHAT_HISTORY' })
-  }
+    appStateContext?.dispatch({ type: 'TOGGLE_CHAT_HISTORY' });
+  };
 
   const handleTimeFrameChange = (timeFrame: string) => {
-    setSelectedTimeFrame(timeFrame)
-  }
+    setSelectedTimeFrame(timeFrame);
+  };
 
   useEffect(() => {
     if (!appStateContext?.state.isLoading) {
-      setLogo(ui?.logo || Contoso)
+      setLogo(ui?.logo || Contoso);
     }
-  }, [appStateContext?.state.isLoading])
+  }, [appStateContext?.state.isLoading]);
 
   useEffect(() => {
     if (copyClicked) {
-      setCopyText('Copied URL')
+      setCopyText('Copied URL');
     }
-  }, [copyClicked])
+  }, [copyClicked]);
 
-  useEffect(() => { }, [appStateContext?.state.isCosmosDBAvailable.status])
+  useEffect(() => { }, [appStateContext?.state.isCosmosDBAvailable.status]);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 480) {
-        setShareLabel(undefined)
-        setHideHistoryLabel('Hide history')
-        setShowHistoryLabel('Show history')
+        setShareLabel(undefined);
+        setHideHistoryLabel('Hide history');
+        setShowHistoryLabel('Show history');
       } else {
-        setShareLabel('Share')
-        setHideHistoryLabel('Hide chat history')
-        setShowHistoryLabel('Show chat history')
+        setShareLabel('Share');
+        setHideHistoryLabel('Hide chat history');
+        setShowHistoryLabel('Show chat history');
       }
-    }
+    };
 
-    window.addEventListener('resize', handleResize)
-    handleResize()
+    window.addEventListener('resize', handleResize);
+    handleResize();
 
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [keySkills, setKeySkills] = useState<string[]>([]);
 
   return (
     <div className={styles.layout}>
@@ -90,9 +101,9 @@ const Layout = () => {
         <Sidebar />
         <div className={styles.content}>
           <Metrics selectedTimeFrame={selectedTimeFrame} />
-          <CandidateSummary />
+          <CandidateSummary setCandidates={setCandidates} setKeySkills={setKeySkills} />
           <div className={styles.keySkillInsightsDialogContainer}>
-            <KeySkillsInsights />
+            <KeySkillsInsights candidates={candidates} keySkills={keySkills} />
             <Outlet />
             <Dialog
               onDismiss={handleSharePanelDismiss}
@@ -135,7 +146,7 @@ const Layout = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

@@ -21,3 +21,7 @@
     border-radius: 50%; /* Make the color box round */
     margin-right: 10px; /* Space between the color box and the text */
   }
+
+  .candidateDropdown {
+    min-width: 200px;
+  }

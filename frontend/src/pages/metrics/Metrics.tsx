@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, Filler } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import styles from './Metrics.module.css';
 import { ChartOptions } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, Filler);
 
 interface MetricsProps {
   selectedTimeFrame: string;
@@ -90,8 +90,7 @@ const Metrics: React.FC<MetricsProps> = ({ selectedTimeFrame }) => {
     const { percentChange, valueChange } = calculateChange(data, selectedTimeFrame);
     const isPositiveChange = valueChange >= 0;
     const color = isPositiveChange ? 'green' : 'red';
-    // const backgroundColor = isPositiveChange ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)'; // Slightly brighter color under the line
-    const backgroundColor = isPositiveChange ? 'green' : 'red';
+    const backgroundColor = isPositiveChange ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)'; // Slightly brighter color under the line
   
     const chartData = {
       labels: filteredData.map(d => d.timeStamp),
