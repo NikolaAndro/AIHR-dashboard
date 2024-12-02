@@ -1,147 +1,134 @@
-.candidatesSummary {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 0px 2px rgba(0, 0, 0, 0.12);
-  }
-  
-  .candidatesSummaryTop {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .jobSelectWrapper {
-    position: relative;
-  }
-  
-  .jobSelect {
-    position: relative;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-  
-  .jobSelectTrigger {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 7px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    background-color: #f0efef;
-    font-size: 16px;
-    color: #333;
-    transition: border-color 0.3s ease;
-  }
-  
-  .jobSelectTrigger .arrow {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #333;
-  }
-  
-  .jobOptions {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: none;
-    flex-direction: column;
-    z-index: 10;
-  }
-  
-  .jobSelect:hover .jobOptions {
-    display: flex;
-  }
-  
-  .jobOption {
-    padding: 10px;
-    font-size: 16px;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .jobOption:hover,
-  .jobOption.selected {
-    background-color: #007BFF;
-    color: #fff;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    margin-top: 20px;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  th,
-  td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-  }
+.jobSelectWrapper {
+  position: relative;
+}
 
-  tbody tr td {
-    text-align: center;
-  }
+.jobSelect {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 
-  tbody tr td:has(.candidateProfileImg) {
-    text-align: left;
-  }
-  
-  td:has(.candidateProfileImg) {
-    display: flex;
-    align-items: center;
-  }
-  
-  .candidateProfileImg {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  h3 {
-    font-weight: bold;
-  }
-  
-  .yes {
-    color: green;
-  }
-  
-  .no {
-    color: red;
-  }
-  
-  .permanent {
-    color: teal;
-  }
-  
-  .contract {
-    color: gray;
-  }
+.jobSelectTrigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: #f0efef;
+  font-size: 16px;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
 
-  .sortByDropdown {
-    min-width: 200px;
-  }
-  
-  .jobTitleDropdown {
-    min-width: 200px;
-  }
-  
-  .jobIdDropdown {
-    min-width: 100px;
-  }
+.jobSelectTrigger .arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #333;
+}
+
+.jobOptions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.jobSelect:hover .jobOptions {
+  display: flex;
+}
+
+.jobOption {
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.jobOption:hover,
+.jobOption.selected {
+  background-color: #007BFF;
+  color: #fff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  margin-top: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr td {
+  text-align: center;
+}
+
+tbody tr td:has(.candidateProfileImg) {
+  text-align: left;
+}
+
+td:has(.candidateProfileImg) {
+  display: flex;
+  align-items: center;
+}
+
+.candidateProfileImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+h3 {
+  font-weight: bold;
+}
+
+.yes {
+  color: green;
+}
+
+.no {
+  color: red;
+}
+
+.permanent {
+  color: teal;
+}
+
+.contract {
+  color: gray;
+}
+
+.sortByDropdown {
+  min-width: 200px;
+}
+
+.jobTitleDropdown {
+  min-width: 200px;
+}
+
+.jobIdDropdown {
+  min-width: 100px;
+}
 
 .clearChatBroom {
   box-sizing: border-box;
@@ -154,4 +141,69 @@
   color: #ffffff;
   border-radius: 4px;
   z-index: 1;
+}
+
+.candidatesSummary {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 0px 2px rgba(0, 0, 0, 0.12);
+}
+
+.candidatesSummaryTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tableHeader {
+  overflow-y: auto;
+}
+
+.tableBody {
+  display: block;
+  max-height: 270px; /* Set the maximum height */
+  min-height: 270px; /* Set the minimum height */
+  overflow-y: auto; /* Make the table body scrollable */
+  width: 100%;
+}
+
+.candidateTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Ensure the table layout is fixed */
+}
+
+.candidateTable th,
+.candidateTable td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.candidateTable th {
+  background-color: #f9f9f9;
+}
+
+.candidateTable td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.candidateNameCell {
+  display: flex;
+  align-items: center;
+  max-width: none; /* Remove the maximum width constraint */
+}
+
+.candidateProfileImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
 }

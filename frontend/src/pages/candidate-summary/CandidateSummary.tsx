@@ -258,48 +258,51 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
           disabled={candidates.length === 0 && !selectedJobName && !selectedJobId} // Disable button when candidates array is empty and no dropdowns are selected
         />
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th style={{ textAlign: 'left' }}>Candidate Name</th>
-            <th>YOE</th>
-            {keySkills.map((skill, index) => (
-              <th key={index}>{skill}</th>
+      <div className={styles.tableContainer}>
+  <div className={styles.tableHeader}>
+    <table className={styles.candidateTable}>
+      <thead>
+        <tr>
+          <th style={{ textAlign: 'left' }}>Candidate Name</th>
+          <th>YOE</th>
+          {keySkills.map((skill, index) => (
+            <th key={index}>{skill}</th>
+          ))}
+          <th>PIV Access</th>
+          <th>Clearances</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div className={styles.tableBody}>
+    <table className={styles.candidateTable}>
+      <tbody>
+        {sortedCandidates.map((candidate, index) => (
+          <tr key={index}>
+            <td className={styles.candidateNameCell}>
+              <img
+                src={candidate.image || 'static/Myles.png'}
+                className={styles.candidateProfileImg}
+                alt={candidate.first_name}
+              />
+              {candidate.first_name} {candidate.last_name}
+            </td>
+            <td>{candidate.years_of_experience}</td>
+            {keySkills.map((skill, skillIndex) => (
+              <td key={skillIndex}>
+                {candidate.key_skills_model_evaluation?.[skill] ?? ''}
+              </td>
             ))}
-            <th>PIV Access</th>
-            <th>Clearances</th>
+            <td className={candidate.piv_access ? styles.yes : styles.no}>
+              {candidate.piv_access ? 'Yes' : 'No'}
+            </td>
+            <td>{candidate.clearances}</td>
           </tr>
-        </thead>
-        <tbody>
-          {sortedCandidates.slice(0, 6).map((candidate, index) => (
-            <tr key={index}>
-              <td>
-                <img
-                  src={candidate.image || 'static/Myles.png'}
-                  className={styles.candidateProfileImg}
-                  alt={candidate.first_name}
-                />
-                {candidate.first_name} {candidate.last_name}
-              </td>
-              <td>{candidate.years_of_experience}</td>
-              {keySkills.map((skill, skillIndex) => (
-                <td key={skillIndex}>
-                  {candidate.key_skills_model_evaluation?.[skill] ?? ''}
-                </td>
-              ))}
-              <td className={candidate.piv_access ? styles.yes : styles.no}>
-                {candidate.piv_access ? 'Yes' : 'No'}
-              </td>
-              <td>{candidate.clearances}</td>
-            </tr>
-          ))}
-          {Array.from({ length: 6 - candidates.length }).map((_, index) => (
-            <tr key={`empty-${index}`}>
-              <td colSpan={keySkills.length + 4}>&nbsp;</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
     </section>
   );
 };

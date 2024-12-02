@@ -138,7 +138,7 @@ const Metrics: React.FC<MetricsProps> = ({ selectedTimeFrame }) => {
           <p className={styles.metricChange} style={{ color }}>{percentChange}% ({valueChange})</p>
           <p className={styles.metricValue}>{data[data.length - 1]?.value}</p>
         </div>
-        <Line data={chartData} options={options} />
+          <Line data={chartData} options={options}/>
       </div>
     );
   };
