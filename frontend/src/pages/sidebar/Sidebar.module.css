@@ -7,56 +7,89 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.sidebar h1 {
+    transition: width 0.3s ease;
+    position: relative; /* Ensure the toggle button is positioned relative to the sidebar */
+  }
+  
+  .sidebar h1 {
     margin-bottom: 30px;
-}
-
-.userInfo {
+  }
+  
+  .userInfo {
     text-align: center;
     margin-bottom: 20px;
-}
-
-.userImage {
+  }
+  
+  .userImage {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     margin-bottom: 10px;
-}
-
-.userInfo p {
+  }
+  
+  .userInfo p {
     margin: 5px 0;
-}
-
-.nav {
+  }
+  
+  .nav {
     width: 100%;
-}
-
-.navLink {
+  }
+  
+  .navLink {
     display: flex;
     align-items: center;
     color: #fff;
     text-decoration: none;
     margin: 10px 0;
     padding: 10px;
-}
-
-.navLink i {
+  }
+  
+  .navLink i {
     width: 20px;
     text-align: center;
     margin-right: 10px;
-}
-
-.navLink.active,
-.navLink:hover {
+  }
+  
+  .navLink.active,
+  .navLink:hover {
     background-color: #162447;
     border-radius: 5px;
-}
-
-.divider {
+  }
+  
+  .divider {
     width: 100%;
     border: 0;
     border-top: 1px solid #ddd;
     margin: 20px 0;
-}
+  }
+  
+  .collapsed {
+    width: 60px; /* Adjust the width as needed */
+  }
+  
+  .toggleButton {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 16px;
+    position: absolute;
+    top: 10px;
+    right: 10px; /* Position the button in the top right corner */
+    z-index: 1;
+  }
+  
+  .collapsed .toggleButton {
+    right: 10px; /* Adjust the position when the sidebar is collapsed */
+  }
+  
+  .collapsed .userInfo,
+  .collapsed .nav,
+  .collapsed .divider {
+    display: none; /* Hide these elements when the sidebar is collapsed */
+  }
+
+  .navLink svg {
+    margin-right: 15px; /* Add more space between icons and text */
+  }
