@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, Filler } from 'chart.js';
 import 'chartjs-adapter-date-fns';
-import styles from './Metrics.module.css';
+import styles from './Metrics.module.css'; // Import the CSS module
 import { ChartOptions } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, Filler);
@@ -149,12 +149,12 @@ const Metrics: React.FC<MetricsProps> = ({ selectedTimeFrame }) => {
       {renderMetric('Offer Letters Sent', metricsData.offerLettersSent)}
       {renderMetric('Candidates Processed', metricsData.candidatesProcessed)}
       {renderMetric('Your Score', metricsData.yourScore)}
-      <div className={styles.aiInsights}>
-        <h3>AI Insights</h3>
-        <ul>
-          <li>Try adding more key skills to insights chart</li>
-          <li>Utilize copilot to ask questions about resume data</li>
-        </ul>
+      <div className={styles.gradientBorder}>
+          <h3>AI Insights</h3>
+          <ul>
+            <li>Try adding more key skills to insights chart</li>
+            <li>Utilize copilot to ask questions about resume data</li>
+          </ul>
       </div>
     </section>
   );
