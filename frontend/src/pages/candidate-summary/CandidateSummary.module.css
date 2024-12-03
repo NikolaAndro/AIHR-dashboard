@@ -207,3 +207,28 @@ h3 {
   border-radius: 50%;
   margin-right: 10px;
 }
+
+/* Scrollbar styles for Firefox */
+.tableBody {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+/* Scrollbar styles for WebKit browsers */
+.tableBody::-webkit-scrollbar {
+  width: 12px;
+}
+
+.tableBody::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.tableBody::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.tableBody::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

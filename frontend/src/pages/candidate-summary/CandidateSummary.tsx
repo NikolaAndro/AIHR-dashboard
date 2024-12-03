@@ -45,6 +45,7 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
     { value: 'years_of_experience', label: 'YOE' },
     { value: 'piv_access', label: 'PIV Access' },
     { value: 'clearances', label: 'Clearances' },
+    { value: 'overall_model_score', label: 'Overall Score' },
     ...keySkills.map(skill => ({ value: skill, label: skill }))
   ];
 
@@ -259,50 +260,52 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
         />
       </div>
       <div className={styles.tableContainer}>
-  <div className={styles.tableHeader}>
-    <table className={styles.candidateTable}>
-      <thead>
-        <tr>
-          <th style={{ textAlign: 'left' }}>Candidate Name</th>
-          <th>YOE</th>
-          {keySkills.map((skill, index) => (
-            <th key={index}>{skill}</th>
-          ))}
-          <th>PIV Access</th>
-          <th>Clearances</th>
-        </tr>
-      </thead>
-    </table>
-  </div>
-  <div className={styles.tableBody}>
-    <table className={styles.candidateTable}>
-      <tbody>
-        {sortedCandidates.map((candidate, index) => (
-          <tr key={index}>
-            <td className={styles.candidateNameCell}>
-              <img
-                src={candidate.image || 'static/Myles.png'}
-                className={styles.candidateProfileImg}
-                alt={candidate.first_name}
-              />
-              {candidate.first_name} {candidate.last_name}
-            </td>
-            <td>{candidate.years_of_experience}</td>
-            {keySkills.map((skill, skillIndex) => (
-              <td key={skillIndex}>
-                {candidate.key_skills_model_evaluation?.[skill] ?? ''}
-              </td>
-            ))}
-            <td className={candidate.piv_access ? styles.yes : styles.no}>
-              {candidate.piv_access ? 'Yes' : 'No'}
-            </td>
-            <td>{candidate.clearances}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
+        <div className={styles.tableHeader}>
+          <table className={styles.candidateTable}>
+            <thead>
+              <tr>
+                <th style={{ textAlign: 'left' }}>Candidate Name</th>
+                <th>YOE</th>
+                {keySkills.map((skill, index) => (
+                  <th key={index}>{skill}</th>
+                ))}
+                <th>PIV Access</th>
+                <th>Clearances</th>
+                <th>Overall Score</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div className={styles.tableBody}>
+          <table className={styles.candidateTable}>
+            <tbody>
+              {sortedCandidates.map((candidate, index) => (
+                <tr key={index}>
+                  <td className={styles.candidateNameCell}>
+                    <img
+                      src={candidate.image || 'static/Myles.png'}
+                      className={styles.candidateProfileImg}
+                      alt={candidate.first_name}
+                    />
+                    {candidate.first_name} {candidate.last_name}
+                  </td>
+                  <td>{candidate.years_of_experience}</td>
+                  {keySkills.map((skill, skillIndex) => (
+                    <td key={skillIndex}>
+                      {candidate.key_skills_model_evaluation?.[skill] ?? ''}
+                    </td>
+                  ))}
+                  <td className={candidate.piv_access ? styles.yes : styles.no}>
+                    {candidate.piv_access ? 'Yes' : 'No'}
+                  </td>
+                  <td>{candidate.clearances}</td>
+                  <td>{candidate.overall_model_score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
   );
 };
