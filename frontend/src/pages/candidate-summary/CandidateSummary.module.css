@@ -167,8 +167,8 @@ h3 {
 
 .tableBody {
   display: block;
-  max-height: 270px; /* Set the maximum height */
-  min-height: 270px; /* Set the minimum height */
+  max-height: 270px; 
+  min-height: 270px;
   overflow-y: auto; /* Make the table body scrollable */
   width: 100%;
 }
@@ -176,7 +176,7 @@ h3 {
 .candidateTable {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* Ensure the table layout is fixed */
+  table-layout: fixed; 
 }
 
 .candidateTable th,
@@ -235,7 +235,7 @@ h3 {
 
 /* Modal styles */
 .modal {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -246,6 +246,42 @@ h3 {
   width: 50%; /* Set the width to 50% of the screen */
   height: 98%; /* Set the height to 80% of the screen */
   max-width: none; /* Remove the maximum width constraint */
+  animation: unfoldIn 1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+}
+
+.modal.fadeOut {
+  animation: modalFadeOut 0.3s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+}
+
+@keyframes unfoldIn {
+  0% {
+    transform: translate(-50%, -50%) scaleY(0.01) scaleX(0);
+  }
+  100% {
+    transform: translate(-50%, -50%) scaleY(1) scaleX(1);
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes modalFadeOut {
+  0% {
+    background-color:white;
+    opacity:1;
+    top:0px;
+  }
+  100% {
+    background-color:transparent;
+    opacity:0;
+    top: -80%;
+  }
 }
 
 .overlay {
@@ -254,7 +290,30 @@ h3 {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.0);
+  animation: fadeIn 1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+}
+
+.overlay.fadeOut {
+  animation: fadeOut 0.3s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    background: rgba(0, 0, 0, 0.0);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    background:rgba(0,0,0,.7);
+  }
+  100% {
+    background:rgba(0,0,0,.0);
+  }
 }
 
 .resume{
@@ -318,87 +377,18 @@ h3 {
   display: flex;
   justify-content: space-between;
 }
-/* 
-.modalHeader a > span span{
-  display: block;
-  background-color: #ed7f00;
-  width: 6px;
-  height: 6px;
-  border-radius: 3px;
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  position: absolute;
-  left: 0;
-  top: 0;
-} */
-
-/* .modalHeader a > span span.circle-left,
-.modalHeader a > span span.circle-right {
-  display: block;
-  background-color: #ed7f00;
-  width: 6px;
-  height: 6px; 
-  border-radius: 3px;
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  position: absolute;
-} */
 
 .modalHeader a > span.left {
   transform: rotate(45deg);
   transform-origin: center;
 }
 
-/* .modalHeader a > span.left .circle-left {
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  margin-left: 0;
-}
-
-.modalHeader a > span.left .circle-right {
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  margin-left: 26px;
-} */
-
 .modalHeader a > span.right {
   transform: rotate(-45deg);
   transform-origin: center;
 }
 
-/* .modalHeader a > span.right .circle-left {
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  margin-left: 0;
-}
-
-.modalHeader a > span.right .circle-right {
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  margin-left: 26px; 
-} */
-
 .modalHeader a:hover > span {
   background-color: #1A1A2E;
   transition: all .4s cubic-bezier(.215,.61,.355,1);
 }
-
-/* .modalHeader a:hover > span span.circle-left,
-.modalHeader a:hover > span span.circle-right {
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  background-color: #008ac9;
-}
-
-.modalHeader a:hover > span.left .circle-left {
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  margin-left: 26px; 
-}
-
-.modalHeader a:hover > span.left .circle-right {
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  margin-left: 0;
-}
-
-.modalHeader a:hover > span.right .circle-left {
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  margin-left: 26px; 
-}
-
-.modalHeader a:hover > span.right .circle-right {
-  transition: all .4s cubic-bezier(.215,.61,.355,1);
-  margin-left: 0;
-} */

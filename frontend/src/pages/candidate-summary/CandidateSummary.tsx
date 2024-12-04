@@ -47,6 +47,7 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
   // New state variables for modal
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalClosing, setIsModalClosing] = useState(false);
 
   const sortOptions: DropdownOption[] = [
     { value: 'first_name', label: 'Candidate Name' },
@@ -223,10 +224,14 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
     setIsModalOpen(true);
   };
 
-  // Close modal
+  // Close modal with animation
   const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedCandidate(null);
+    setIsModalClosing(true); // Set modal closing state
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsModalClosing(false); // Reset modal closing state
+      setSelectedCandidate(null);
+    }, 200); // Match the duration of the unfoldOut animation
   };
 
   return (
@@ -331,8 +336,8 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
           isOpen={isModalOpen}
           onRequestClose={closeModal}
           contentLabel="Candidate Resume"
-          className={styles.modal}
-          overlayClassName={styles.overlay}
+          className={`${styles.modal} ${isModalClosing ? styles.fadeOut : ''}`} // Apply fade-out class conditionally
+          overlayClassName={`${styles.overlay} ${isModalClosing ? styles.fadeOut : ''}`}
         >
           {selectedCandidate && (
             <div className={styles.resume}>
@@ -340,14 +345,8 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
                 <h2>{selectedCandidate.first_name} {selectedCandidate.last_name}</h2>
                 
                 <a onClick={closeModal} className={styles.modalCloseButton}>
-                    <span className={styles.left}>
-                      <span className={styles.circleLeft}></span>
-                      <span className={styles.circleRight}></span>
-                    </span>
-                    <span className={styles.right}>
-                      <span className={styles.circleLeft}></span>
-                      <span className={styles.circleRight}></span>
-                    </span>
+                    <span className={styles.left}></span>
+                    <span className={styles.right}></span>
                 </a>
                 
               </div>
