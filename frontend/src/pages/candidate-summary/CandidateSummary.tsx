@@ -3,6 +3,9 @@ import Dropdown from '../../components/Dropdown/Dropdown';
 import FilterModal from '../../components/FilterModal/FilterModal';
 import styles from './CandidateSummary.module.css';
 import { CommandBarButton } from '@fluentui/react';
+import Modal from 'react-modal'; // Import the Modal component
+
+Modal.setAppElement('#root'); 
 
 interface DropdownOption {
   value: string;
@@ -18,6 +21,7 @@ interface Candidate {
   image?: string;
   [key: string]: any; // To allow dynamic key access for key skills
   key_skills_model_evaluation: { [key: string]: number };
+  resume_url?: string; // Assuming resume_url is the link to the PDF document
 }
 
 interface Job {
@@ -39,6 +43,10 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
   const [candidates, setLocalCandidates] = useState<Candidate[]>([]);
   const [keySkills, setLocalKeySkills] = useState<string[]>([]);
   const [sortCriteria, setSortCriteria] = useState<DropdownOption | null>(null);
+
+  // New state variables for modal
+  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sortOptions: DropdownOption[] = [
     { value: 'first_name', label: 'Candidate Name' },
@@ -209,6 +217,18 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
     setKeySkills([]); // Clear key skills in parent component
   };
 
+  // Handle row click to open modal
+  const handleRowClick = (candidate: Candidate) => {
+    setSelectedCandidate(candidate);
+    setIsModalOpen(true);
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCandidate(null);
+  };
+
   return (
     <section className={styles.candidatesSummary}>
       <div className={styles.candidatesSummaryTop}>
@@ -280,7 +300,7 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
           <table className={styles.candidateTable}>
             <tbody>
               {sortedCandidates.map((candidate, index) => (
-                <tr key={index}>
+                <tr key={index} onClick={() => handleRowClick(candidate)}> {/* Attach handleRowClick */}
                   <td className={styles.candidateNameCell}>
                     <img
                       src={candidate.image || 'static/Myles.png'}
@@ -305,6 +325,42 @@ const CandidateSummary: React.FC<CandidateSummaryProps> = ({ setCandidates, setK
             </tbody>
           </table>
         </div>
+        
+        {/* Modal for displaying candidate resume */}
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          contentLabel="Candidate Resume"
+          className={styles.modal}
+          overlayClassName={styles.overlay}
+        >
+          {selectedCandidate && (
+            <div className={styles.resume}>
+              <div className={styles.modalHeader}>
+                <h2>{selectedCandidate.first_name} {selectedCandidate.last_name}</h2>
+                
+                <a onClick={closeModal} className={styles.modalCloseButton}>
+                    <span className={styles.left}>
+                      <span className={styles.circleLeft}></span>
+                      <span className={styles.circleRight}></span>
+                    </span>
+                    <span className={styles.right}>
+                      <span className={styles.circleLeft}></span>
+                      <span className={styles.circleRight}></span>
+                    </span>
+                </a>
+                
+              </div>
+              <iframe
+                src={selectedCandidate.resume_url}
+                width="100%"
+                height="95%"
+                title="Resume"
+              />
+              
+            </div>
+          )}
+        </Modal>
       </div>
     </section>
   );

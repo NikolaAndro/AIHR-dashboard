@@ -232,3 +232,173 @@ h3 {
 .tableBody::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* Modal styles */
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 50%; /* Set the width to 50% of the screen */
+  height: 98%; /* Set the height to 80% of the screen */
+  max-width: none; /* Remove the maximum width constraint */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.resume{
+  height: 100%;
+}
+
+/* Modal header styles */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.modalHeader h2 {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 36px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.modalHeader button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* New button styles */
+.modalHeader {
+  position: relative;
+}
+
+.modalHeader a {
+  width: 50px; /* Scaled down to 50px */
+  height: 50px; /* Scaled down to 50px */
+  position: absolute;
+  right: 10px; /* Move to the right side */
+  top: 50%;
+  transform: translateY(-50%); /* Center vertically */
+  background-color: #ffffff;
+  border-radius: 25px; /* Adjusted for new size */
+  opacity: 1;
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  box-shadow: 0px 0px 15px 0px #51e3fa; /* Adjusted for new size */
+}
+
+.modalHeader a > span {
+  background-color: #1098ad;
+  display: block;
+  height: 6px; /* Scaled down to 6px */
+  border-radius: 3px; /* Adjusted for new size */
+  position: relative;
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  position: absolute;
+  top: 50%;
+  margin-top: -3px; /* Adjusted for new size */
+  left: 9px; /* Adjusted for new size */
+  width: 32px; /* Scaled down to 32px */
+  display: flex;
+  justify-content: space-between;
+}
+/* 
+.modalHeader a > span span{
+  display: block;
+  background-color: #ed7f00;
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  position: absolute;
+  left: 0;
+  top: 0;
+} */
+
+/* .modalHeader a > span span.circle-left,
+.modalHeader a > span span.circle-right {
+  display: block;
+  background-color: #ed7f00;
+  width: 6px;
+  height: 6px; 
+  border-radius: 3px;
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  position: absolute;
+} */
+
+.modalHeader a > span.left {
+  transform: rotate(45deg);
+  transform-origin: center;
+}
+
+/* .modalHeader a > span.left .circle-left {
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  margin-left: 0;
+}
+
+.modalHeader a > span.left .circle-right {
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  margin-left: 26px;
+} */
+
+.modalHeader a > span.right {
+  transform: rotate(-45deg);
+  transform-origin: center;
+}
+
+/* .modalHeader a > span.right .circle-left {
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  margin-left: 0;
+}
+
+.modalHeader a > span.right .circle-right {
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  margin-left: 26px; 
+} */
+
+.modalHeader a:hover > span {
+  background-color: #1A1A2E;
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+}
+
+/* .modalHeader a:hover > span span.circle-left,
+.modalHeader a:hover > span span.circle-right {
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  background-color: #008ac9;
+}
+
+.modalHeader a:hover > span.left .circle-left {
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  margin-left: 26px; 
+}
+
+.modalHeader a:hover > span.left .circle-right {
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  margin-left: 0;
+}
+
+.modalHeader a:hover > span.right .circle-left {
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  margin-left: 26px; 
+}
+
+.modalHeader a:hover > span.right .circle-right {
+  transition: all .4s cubic-bezier(.215,.61,.355,1);
+  margin-left: 0;
+} */
