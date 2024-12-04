@@ -149,12 +149,15 @@ async def init_openai_client():
                 "AZURE_OPENAI_ENDPOINT or AZURE_OPENAI_RESOURCE is required"
             )
 
+        if app_settings.azure_openai.endpoint:
+            logging.debug("Using AZURE_OPENAI_ENDPOINT: " + app_settings.azure_openai.endpoint)
+            
         endpoint = (
             app_settings.azure_openai.endpoint
             if app_settings.azure_openai.endpoint
             else f"https://{app_settings.azure_openai.resource}.openai.azure.com/"
         )
-
+    
         # Authentication
         aoai_api_key = app_settings.azure_openai.key
         ad_token_provider = None
