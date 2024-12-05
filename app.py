@@ -151,7 +151,7 @@ async def init_openai_client():
 
         if app_settings.azure_openai.endpoint:
             logging.debug("Using AZURE_OPENAI_ENDPOINT: " + app_settings.azure_openai.endpoint)
-            
+
         endpoint = (
             app_settings.azure_openai.endpoint
             if app_settings.azure_openai.endpoint
@@ -221,7 +221,7 @@ async def init_cosmosdb_client():
             credential_read_only = os.getenv("AZURE_COSMOSDB_READ_ONLY_ACCOUNT_KEY")
             cosmos_hr_manager_client = CosmosHRmanagersDBClient(
                 cosmosdb_endpoint=cosmos_endpoint,
-                credential=credential_read_only,
+                credential=credential,
                 database_name=hr_manager_database,
                 container_name=hr_manager_container,
             )
@@ -231,7 +231,7 @@ async def init_cosmosdb_client():
             candidates_container = os.getenv("AZURE_COSMOSDB_CANDIDATES_CONTAINER")
             cosmos_candidates_client = CosmosCandidatesDBService(
                 cosmosdb_endpoint=cosmos_endpoint,
-                credential=credential_read_only,
+                credential=credential,
                 database_name=candidates_database,
                 container_name=candidates_container,
             )
@@ -241,7 +241,7 @@ async def init_cosmosdb_client():
             jobs_container = os.getenv("AZURE_COSMOSDB_JOBS_CONTAINER")
             cosmos_jobs_client = CosmosJobsDBService(
                 cosmosdb_endpoint=cosmos_endpoint,
-                credential=credential_read_only,
+                credential=credential,
                 database_name=jobs_database,
                 container_name=jobs_container,
             )
