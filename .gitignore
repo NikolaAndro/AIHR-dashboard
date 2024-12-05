@@ -1,7 +1,11 @@
 .venv
 frontend/node_modules
 .env
+.env_local
+env_copy.json
 # static
+static/
+log.20241204
 .azure/
 __pycache__/
 .ipynb_checkpoints/
