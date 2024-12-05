@@ -2,6 +2,7 @@
 frontend/node_modules
 .env
 .env_local
+.env_remote
 env_copy.json
 # static
 static/

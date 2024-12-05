@@ -66,6 +66,21 @@ class _ChatHistorySettings(BaseSettings):
     enable_feedback: bool = False
 
 
+class _AzureCosmosDBSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_prefix="AZURE_COSMOSDB_",
+        env_file=DOTENV_PATH,
+        extra="ignore",
+        env_ignore_empty=True
+    )
+
+    hr_manager_database: str
+    hr_manager_container: str
+    candidates_database: str
+    candidates_container: str
+    jobs_database: str
+    jobs_container: str
+
 class _PromptflowSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="PROMPTFLOW_",
@@ -766,6 +781,7 @@ class _AppSettings(BaseModel):
     
     # Constructed properties
     chat_history: Optional[_ChatHistorySettings] = None
+    cosmosDB: Optional[_AzureCosmosDBSettings] = None
     datasource: Optional[DatasourcePayloadConstructor] = None
     promptflow: Optional[_PromptflowSettings] = None
 
@@ -786,6 +802,16 @@ class _AppSettings(BaseModel):
         
         except ValidationError:
             self.chat_history = None
+        
+        return self
+    
+    @model_validator(mode="after")
+    def set_cosmosdb_settings(self) -> Self:
+        try:
+            self.cosmosDB = _AzureCosmosDBSettings()
+        
+        except ValidationError:
+            self.cosmosDB = None
         
         return self
     

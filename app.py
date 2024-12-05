@@ -215,37 +215,51 @@ async def init_cosmosdb_client():
                 enable_message_feedback=app_settings.chat_history.enable_feedback,
             )
 
+            logging.debug("CosmosDB configured")
+            logging.debug(f"Endpoint: {cosmos_endpoint}")
+            logging.debug(f"Database: {app_settings.chat_history.database}")
+            logging.debug(f"Container: {app_settings.chat_history.conversations_container}")
+            logging.debug(f'Credential: {credential}')
+
+
             #Initialize HR Manager client
-            hr_manager_database = os.getenv("AZURE_COSMOSDB_HR_MANAGER_DATABASE")
-            hr_manager_container = os.getenv("AZURE_COSMOSDB_HR_MANAGER_CONTAINER")
-            credential_read_only = os.getenv("AZURE_COSMOSDB_READ_ONLY_ACCOUNT_KEY")
             cosmos_hr_manager_client = CosmosHRmanagersDBClient(
                 cosmosdb_endpoint=cosmos_endpoint,
                 credential=credential,
-                database_name=hr_manager_database,
-                container_name=hr_manager_container,
+                database_name=app_settings.cosmosDB.hr_manager_database,
+                container_name=app_settings.cosmosDB.hr_manager_container,
             )
 
-            # Initialize candidates db client
-            candidates_database = os.getenv("AZURE_COSMOSDB_CANDIDATES_DATABASE")
-            candidates_container = os.getenv("AZURE_COSMOSDB_CANDIDATES_CONTAINER")
+            logging.debug("CosmosDB configured")
+            logging.debug(f"Endpoint: {cosmos_endpoint}")
+            logging.debug(f"Database: {app_settings.cosmosDB.hr_manager_database}")
+            logging.debug(f"Container: {app_settings.cosmosDB.hr_manager_container}")
+
             cosmos_candidates_client = CosmosCandidatesDBService(
                 cosmosdb_endpoint=cosmos_endpoint,
                 credential=credential,
-                database_name=candidates_database,
-                container_name=candidates_container,
+                database_name=app_settings.cosmosDB.candidates_database,
+                container_name=app_settings.cosmosDB.candidates_container,
             )
 
-            # Initialize jobs db client
-            jobs_database = os.getenv("AZURE_COSMOSDB_JOBS_DATABASE")
-            jobs_container = os.getenv("AZURE_COSMOSDB_JOBS_CONTAINER")
+            logging.debug("CosmosDB configured")
+            logging.debug(f"Endpoint: {cosmos_endpoint}")
+            logging.debug(f"Database: {app_settings.cosmosDB.candidates_database}")
+            logging.debug(f"Container: {app_settings.cosmosDB.candidates_container}")
+
             cosmos_jobs_client = CosmosJobsDBService(
                 cosmosdb_endpoint=cosmos_endpoint,
                 credential=credential,
-                database_name=jobs_database,
-                container_name=jobs_container,
+                database_name=app_settings.cosmosDB.jobs_database,
+                container_name=app_settings.cosmosDB.jobs_container,
             )
             
+            logging.debug("CosmosDB configured")
+            logging.debug(f"Endpoint: {cosmos_endpoint}")
+            logging.debug(f"Database: {app_settings.cosmosDB.jobs_database}")
+            logging.debug(f"Container: {app_settings.cosmosDB.jobs_container}")
+
+
         except Exception as e:
             logging.exception("Exception in CosmosDB initialization", e)
             cosmos_conversation_client = None
